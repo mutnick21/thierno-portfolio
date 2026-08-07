@@ -1,0 +1,73 @@
+---
+const facts = [
+  {
+    label: 'Formation',
+    lines: [
+      { t: 'Ingénieur de Conception en Informatique', s: 'ESP — UCAD, Dakar · depuis 2024' },
+      { t: 'Technicien Supérieur — Télécoms & Réseaux', s: 'ESP — UCAD · 2022–2024' },
+    ],
+  },
+  {
+    label: 'Certifs',
+    tags: ['Cisco Networking Essentials', 'Cisco Intro to Cybersecurity', 'Huawei HCIA-Datacom'],
+  },
+  {
+    label: 'Langues',
+    plain: 'Français C1 · Anglais B1 · Wolof natif',
+  },
+  {
+    label: 'Distinction',
+    lines: [{ t: '2ᵉ prix — Polytech Innovation 2025', s: 'Projet Aquatus · Soixantenaire de l\'ESP' }],
+  },
+];
+---
+<section id="apropos" class="relative md:min-h-screen flex items-center">
+  <div class="absolute top-1/2 right-[-10%] -translate-y-1/2 w-[40vw] h-[40vw] max-w-[520px] max-h-[520px] glow-radial blur-3xl opacity-50 pointer-events-none"></div>
+
+  <div class="relative z-10 max-w-6xl mx-auto px-7 w-full grid md:grid-cols-2 gap-12 md:gap-0 py-24 md:py-0">
+
+    <!-- gauche : bio -->
+    <div class="reveal flex flex-col justify-center md:pr-14">
+      <span class="eyebrow mb-5">Qui suis-je</span>
+      <h2 class="section-title grad-text mb-8">À propos.</h2>
+      <p class="text-lilac-300/90 text-lg leading-relaxed mb-5">
+        Élève ingénieur en informatique, option <span class="text-cream-100 font-medium">Réseaux & Télécommunications</span>,
+        à l'École Supérieure Polytechnique de Dakar.
+      </p>
+      <p class="text-lilac-300/80 leading-relaxed mb-5">
+        Là où beaucoup se spécialisent sur une seule couche, j'aime comprendre la chaîne complète :
+        du câble qui transporte le signal au code qui l'exploite, en passant par la sécurité qui le
+        protège et les systèmes qui le font tourner.
+      </p>
+      <p class="text-lilac-300/80 leading-relaxed">
+        Curieux et rigoureux, motivé à concevoir et exploiter des
+        <span class="text-cream-100 font-medium">infrastructures réseau performantes</span>.
+      </p>
+    </div>
+
+    <!-- droite : carte d'identité -->
+    <div class="reveal flex flex-col justify-center md:border-l md:border-plum-800/60 md:pl-14">
+      <dl class="divide-y divide-plum-800">
+        {facts.map((f) => (
+          <div class="py-5 grid grid-cols-[92px_1fr] gap-4 items-start">
+            <dt class="font-mono text-[11px] uppercase tracking-widest text-lilac-300/60 pt-1">{f.label}</dt>
+            <dd class="text-cream-100">
+              {f.lines && f.lines.map((l) => (
+                <div class="mb-2 last:mb-0">
+                  <p class="font-medium">{l.t}</p>
+                  <p class="text-lilac-300/70 text-sm">{l.s}</p>
+                </div>
+              ))}
+              {f.tags && (
+                <div class="flex flex-wrap gap-2">
+                  {f.tags.map((t) => <span class="skill-tag">{t}</span>)}
+                </div>
+              )}
+              {f.plain && <p>{f.plain}</p>}
+            </dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  </div>
+</section>

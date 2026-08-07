@@ -1,0 +1,145 @@
+---
+const filters = ['Tous', 'Réseaux', 'Sécurité', 'Système', 'Dev & Data'];
+
+const projects = [
+  {
+    cat: 'Réseaux', type: 'SD-WAN', title: 'SD-WAN Fortinet',
+    desc: "Architecture SD-WAN multi-liens sur FortiGate simulée sous GNS3 : tunnel IPsec site-à-site (IKEv2/ESP), isolation VRF, règles SD-WAN et Performance SLA avec bascule automatique.",
+    stack: 'FortiGate · IPsec · VRF · GNS3',
+  },
+  {
+    cat: 'Réseaux', type: 'Routage', title: 'Interconnexion Multi-AS (BGP)',
+    desc: "Réseau d'entreprise à 4 systèmes autonomes : routage intra-AS OSPF/EIGRP/RIP v2, interconnexion inter-AS en BGP avec redistribution, services applicatifs et NAT dynamique.",
+    stack: 'BGP · OSPF · EIGRP · NAT · GNS3',
+  },
+  {
+    cat: 'Système', type: 'Infrastructure', title: "SI d'entreprise (Linux)",
+    desc: "SI complet sur 5 serveurs : identité/SSO FreeIPA (LDAP, Kerberos, CA), DNS/NTP (BIND9, Chrony), partage (Samba, NFS, CUPS), reverse proxy HTTPS et messagerie sécurisée.",
+    stack: 'FreeIPA · BIND9 · Nginx · Postfix',
+  },
+  {
+    cat: 'Sécurité', type: 'SOC / SIEM', title: 'SOC Wazuh (SIEM / HIDS)',
+    desc: "Centre de supervision de sécurité sous Linux (Manager, Indexer, Dashboard, agents) : tests de détection offensifs cartographiés MITRE ATT&CK, audit CIS et traitement d'incident réel.",
+    stack: 'Wazuh · MITRE ATT&CK · HIDS · CIS',
+  },
+  {
+    cat: 'Sécurité', type: 'WAF', title: 'Pare-feu applicatif (FortiWeb)',
+    desc: "Déploiement d'un WAF FortiWeb pour sécuriser des applications web : reverse proxy, virtual/real servers, policies HTTP/HTTPS, analyse des menaces (SQLi, XSS, DoS) et rapports d'audit.",
+    stack: 'FortiWeb · Reverse Proxy · HTTPS',
+  },
+  {
+    cat: 'Dev & Data', type: 'Web', title: 'E-commerce — Déco Élégance',
+    desc: "Site de vente et de services de décoration : catalogue par catégories, panier et tunnel de commande, réservation de prestations et espace client avec suivi des commandes.",
+    stack: 'HTML/CSS · JavaScript · MySQL',
+  },
+  {
+    cat: 'Dev & Data', type: 'Big Data', title: 'Hadoop / MapReduce',
+    desc: "Jobs MapReduce en Java (WordCount, produit le plus acheté) sur un cluster Hadoop multi-nœuds (1 maître + 5 nœuds) conteneurisé Docker, exécution HDFS/YARN via build Maven.",
+    stack: 'Hadoop · Java · HDFS/YARN · Docker',
+  },
+  {
+    cat: 'Dev & Data', type: 'IoT', title: 'Chaîne IoT — Node-RED',
+    desc: "Chaîne IoT en programmation par flux : MQTT pub/sub (broker HiveMQ) et pipeline d'alertes, API REST (Open-Meteo), gestion du contexte et dashboard temps réel.",
+    stack: 'Node-RED · MQTT · REST · Dashboard',
+  },
+];
+---
+<section id="projets" class="py-28 md:py-32">
+  <div class="max-w-6xl mx-auto px-7">
+    <div class="reveal mb-12">
+      <span class="eyebrow mb-5">Réalisations</span>
+      <h2 class="section-title mt-4">Projets sélectionnés.</h2>
+      <p class="text-lilac-300/80 max-w-lg mt-5">
+        Des travaux concrets, du laboratoire réseau au centre de supervision de sécurité.
+      </p>
+    </div>
+
+    <!-- filtres : segmented control avec pastille glissante -->
+    <div class="reveal mb-10">
+      <div id="filters" class="no-scrollbar relative inline-flex items-center gap-1 p-1.5 rounded-full border border-plum-800 bg-plum-900/60 max-w-full overflow-x-auto">
+        <span id="filter-pill" class="absolute top-1.5 bottom-1.5 rounded-full bg-peach-200 shadow-[0_2px_12px_-2px_rgba(246,219,192,0.5)] transition-[left,width] duration-300 ease-[cubic-bezier(0.34,1.2,0.64,1)]" style="left:0;width:0"></span>
+        {filters.map((f, i) => (
+          <button
+            class:list={['filter-btn relative z-10 font-mono text-[12px] uppercase tracking-wider px-4 py-2 rounded-full whitespace-nowrap transition-colors duration-300',
+              i === 0 ? 'text-plum-950' : 'text-lilac-300 hover:text-cream-100']}
+            data-filter={f}
+          >{f}</button>
+        ))}
+      </div>
+    </div>
+
+    <!-- grille -->
+    <div class="grid md:grid-cols-2 gap-5" id="grid">
+      {projects.map((p, i) => (
+        <article
+          class="project-card group relative bg-plum-900 border border-plum-800 rounded-2xl p-8 transition-all duration-300 hover:border-peach-200/40 hover:-translate-y-1 overflow-hidden"
+          data-cat={p.cat}
+        >
+          <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-peach-200 via-peach-200/40 to-transparent scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-500"></div>
+          <div class="flex items-start justify-between mb-5">
+            <div class="flex items-center gap-3">
+              <span class="font-display font-bold text-lg text-plum-700 group-hover:text-lilac-300/70 transition-colors">{String(i + 1).padStart(2, '0')}</span>
+              <span class="font-mono text-[11px] uppercase tracking-widest text-lilac-300">{p.type}</span>
+            </div>
+            <span class="w-8 h-8 rounded-full border border-plum-800 flex items-center justify-center text-lilac-300/40 group-hover:text-plum-950 group-hover:bg-peach-200 group-hover:border-peach-200 transition-all duration-300">↗</span>
+          </div>
+          <h3 class="font-display font-semibold text-xl mb-3">{p.title}</h3>
+          <p class="text-lilac-300/80 text-[0.95rem] leading-relaxed mb-6">{p.desc}</p>
+          <div class="flex items-center justify-between gap-3 pt-4">
+            <p class="font-mono text-[11px] text-lilac-300/60 tracking-wide">{p.stack}</p>
+            <span class="font-mono text-[10px] uppercase tracking-wider text-lilac-300/40 shrink-0">{p.cat}</span>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  const wrap = document.getElementById('filters');
+  const pill = document.getElementById('filter-pill');
+  const buttons = Array.from(document.querySelectorAll('.filter-btn'));
+  const cards = document.querySelectorAll('.project-card');
+  let current = buttons[0];
+
+  function movePill(btn) {
+    pill.style.left = btn.offsetLeft + 'px';
+    pill.style.width = btn.offsetWidth + 'px';
+  }
+
+  function setActive(btn) {
+    buttons.forEach((b) => {
+      const on = b === btn;
+      b.classList.toggle('text-plum-950', on);
+      b.classList.toggle('text-lilac-300', !on);
+      b.classList.toggle('hover:text-cream-100', !on);
+    });
+    current = btn;
+    movePill(btn);
+  }
+
+  function applyFilter(f) {
+    cards.forEach((c) => {
+      const show = f === 'Tous' || c.getAttribute('data-cat') === f;
+      if (show) {
+        c.style.display = '';
+        requestAnimationFrame(() => { c.style.opacity = '1'; c.style.transform = ''; });
+      } else {
+        c.style.opacity = '0';
+        c.style.transform = 'translateY(12px)';
+        setTimeout(() => { c.style.display = 'none'; }, 250);
+      }
+    });
+  }
+
+  buttons.forEach((b) =>
+    b.addEventListener('click', () => { setActive(b); applyFilter(b.getAttribute('data-filter')); })
+  );
+
+  // position initiale (après le calcul de mise en page et le chargement des polices)
+  const init = () => movePill(current);
+  requestAnimationFrame(init);
+  window.addEventListener('load', init);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(init);
+  window.addEventListener('resize', () => movePill(current));
+</script>
