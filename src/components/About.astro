@@ -1,73 +1,147 @@
 ---
+/* tout ce bloc vient du CV (public/cv.pdf) */
+const parcours = [
+  {
+    t: "Diplôme d'Ingénieur de Conception en Informatique",
+    s: 'École Supérieure Polytechnique — UCAD, Dakar',
+    d: 'depuis oct. 2024',
+  },
+  {
+    t: 'Technicien Supérieur en Informatique — opt. Télécommunications & Réseaux',
+    s: 'École Supérieure Polytechnique — UCAD, Dakar',
+    d: '2022 – 2024',
+  },
+  {
+    t: 'DUT Génie Civil — 1ʳᵉ année',
+    s: 'École Supérieure Polytechnique — UCAD, Dakar',
+    d: '2021 – 2022',
+    note: 'reconversion vers l\'informatique',
+  },
+  {
+    t: 'Baccalauréat Scientifique S2 — Mention Bien',
+    s: 'École Mame Abdou Dabakh, Yoff — Dakar',
+    d: '2021',
+  },
+];
+
+const engagements = [
+  { t: 'Président du Pôle Communication', s: "Collectif des Étudiants de l'ESP", d: '2024 – présent' },
+  { t: 'Chef du Pôle Communication', s: 'Club Anglais ESP', d: '2023 – présent' },
+  { t: 'Membre', s: 'Enactus ESP', d: '2023 – présent' },
+  { t: 'Adjoint au Pôle Communication', s: 'Club Humanitaire ESP', d: '2022 – 2025' },
+];
+
 const facts = [
-  {
-    label: 'Formation',
-    lines: [
-      { t: 'Ingénieur de Conception en Informatique', s: 'ESP — UCAD, Dakar · depuis 2024' },
-      { t: 'Technicien Supérieur — Télécoms & Réseaux', s: 'ESP — UCAD · 2022–2024' },
-    ],
-  },
-  {
-    label: 'Certifs',
-    tags: ['Cisco Networking Essentials', 'Cisco Intro to Cybersecurity', 'Huawei HCIA-Datacom'],
-  },
-  {
-    label: 'Langues',
-    plain: 'Français C1 · Anglais B1 · Wolof natif',
-  },
+  { label: 'Certifs', tags: ['Networking Essentials (Cisco)', 'Intro to Cybersecurity (Cisco)', 'HCIA-Datacom (Huawei)'] },
+  { label: 'Langues', plain: 'Français C1 · Anglais B1 · Wolof natif' },
   {
     label: 'Distinction',
-    lines: [{ t: '2ᵉ prix — Polytech Innovation 2025', s: 'Projet Aquatus · Soixantenaire de l\'ESP' }],
+    lines: [{ t: '2ᵉ prix — Polytech Innovation 2025', s: "Projet Aquatus · Soixantenaire de l'ESP" }],
   },
 ];
 ---
-<section id="apropos" class="relative md:min-h-screen flex items-center">
-  <div class="absolute top-1/2 right-[-10%] -translate-y-1/2 w-[40vw] h-[40vw] max-w-[520px] max-h-[520px] glow-radial blur-3xl opacity-50 pointer-events-none"></div>
+<section id="apropos" class="relative py-28 md:py-32">
+  <div class="relative z-10 max-w-6xl mx-auto px-7 w-full">
 
-  <div class="relative z-10 max-w-6xl mx-auto px-7 w-full grid md:grid-cols-2 gap-12 md:gap-0 py-24 md:py-0">
+    <!-- ░ bio + faits rapides ░ -->
+    <div class="grid md:grid-cols-2 gap-12 md:gap-16">
+      <div class="reveal flex flex-col justify-center">
+        <span class="eyebrow mb-5">Qui suis-je</span>
+        <h2 class="section-title grad-text mb-8">À propos.</h2>
+        <p class="text-lilac-300/90 text-lg leading-relaxed mb-5">
+          Élève ingénieur en informatique, option <span class="text-cream-100 font-medium">Réseaux &amp; Télécommunications</span>,
+          à l'École Supérieure Polytechnique de Dakar.
+        </p>
+        <p class="text-lilac-300/80 leading-relaxed mb-5">
+          Mon parcours a bifurqué tôt. Entré en génie civil en 2021, il m'a fallu une année pour
+          comprendre que la structure qui m'intéressait n'était pas celle des bâtiments mais celle
+          des réseaux. J'ai <span class="text-cream-100 font-medium">changé de voie dès la rentrée suivante</span> —
+          assez tôt pour ne rien perdre, assez tard pour savoir pourquoi.
+        </p>
+        <p class="text-lilac-300/80 leading-relaxed mb-5">
+          Là où beaucoup se spécialisent sur une seule couche, j'aime comprendre la chaîne complète :
+          du câble qui transporte le signal au code qui l'exploite, en passant par la sécurité qui le
+          protège et les systèmes qui le font tourner.
+        </p>
+        <p class="text-lilac-300/80 leading-relaxed">
+          Curieux et rigoureux, motivé à concevoir et exploiter des
+          <span class="text-cream-100 font-medium">infrastructures réseau performantes</span>.
+        </p>
+      </div>
 
-    <!-- gauche : bio -->
-    <div class="reveal flex flex-col justify-center md:pr-14">
-      <span class="eyebrow mb-5">Qui suis-je</span>
-      <h2 class="section-title grad-text mb-8">À propos.</h2>
-      <p class="text-lilac-300/90 text-lg leading-relaxed mb-5">
-        Élève ingénieur en informatique, option <span class="text-cream-100 font-medium">Réseaux & Télécommunications</span>,
-        à l'École Supérieure Polytechnique de Dakar.
-      </p>
-      <p class="text-lilac-300/80 leading-relaxed mb-5">
-        Là où beaucoup se spécialisent sur une seule couche, j'aime comprendre la chaîne complète :
-        du câble qui transporte le signal au code qui l'exploite, en passant par la sécurité qui le
-        protège et les systèmes qui le font tourner.
-      </p>
-      <p class="text-lilac-300/80 leading-relaxed">
-        Curieux et rigoureux, motivé à concevoir et exploiter des
-        <span class="text-cream-100 font-medium">infrastructures réseau performantes</span>.
-      </p>
+      <div class="reveal flex flex-col justify-center" style="--accent:246 219 192">
+        <dl class="divide-y divide-plum-800">
+          {facts.map((f) => (
+            <div class="py-5 first:pt-0 grid grid-cols-[92px_1fr] gap-4 items-start">
+              <dt class="font-mono text-[11px] uppercase tracking-widest text-lilac-300/60 pt-1">{f.label}</dt>
+              <dd class="text-cream-100">
+                {f.lines && f.lines.map((l) => (
+                  <div class="mb-2 last:mb-0">
+                    <p class="font-medium">{l.t}</p>
+                    <p class="text-lilac-300/70 text-sm">{l.s}</p>
+                  </div>
+                ))}
+                {f.tags && (
+                  <div class="flex flex-wrap gap-2">
+                    {f.tags.map((t) => <span class="bubble bubble-3">{t}</span>)}
+                  </div>
+                )}
+                {f.plain && <p>{f.plain}</p>}
+              </dd>
+            </div>
+          ))}
+        </dl>
+      </div>
     </div>
 
-    <!-- droite : carte d'identité -->
-    <div class="reveal flex flex-col justify-center md:border-l md:border-plum-800/60 md:pl-14">
-      <dl class="divide-y divide-plum-800">
-        {facts.map((f) => (
-          <div class="py-5 grid grid-cols-[92px_1fr] gap-4 items-start">
-            <dt class="font-mono text-[11px] uppercase tracking-widest text-lilac-300/60 pt-1">{f.label}</dt>
-            <dd class="text-cream-100">
-              {f.lines && f.lines.map((l) => (
-                <div class="mb-2 last:mb-0">
-                  <p class="font-medium">{l.t}</p>
-                  <p class="text-lilac-300/70 text-sm">{l.s}</p>
-                </div>
-              ))}
-              {f.tags && (
-                <div class="flex flex-wrap gap-2">
-                  {f.tags.map((t) => <span class="skill-tag">{t}</span>)}
-                </div>
+    <!-- ░ parcours + engagements ░ -->
+    <div class="grid md:grid-cols-2 gap-12 md:gap-16 mt-20 pt-16 border-t border-plum-800/70">
+
+      <div class="reveal" style="--accent:246 200 154">
+        <span class="eyebrow mb-6">Parcours</span>
+        <ul class="mt-7">
+          {parcours.map((p) => (
+            <li class="tl-item relative pl-8 pb-8 last:pb-0">
+              <span class="tl-dot"></span>
+              <p class="font-medium text-cream-100 leading-snug">{p.t}</p>
+              {p.note && (
+                <span class="inline-block mt-2 bubble bubble-3">{p.note}</span>
               )}
-              {f.plain && <p>{f.plain}</p>}
-            </dd>
-          </div>
-        ))}
-      </dl>
+              <p class="text-lilac-300/70 text-sm mt-1.5">{p.s}</p>
+              <p class="font-mono text-[11px] mt-1 tracking-wide" style="color:rgb(var(--accent)/.75)">{p.d}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div class="reveal" style="--accent:183 155 232">
+        <span class="eyebrow mb-6">Engagements</span>
+        <ul class="mt-7">
+          {engagements.map((e) => (
+            <li class="tl-item relative pl-8 pb-8 last:pb-0">
+              <span class="tl-dot"></span>
+              <p class="font-medium text-cream-100 leading-snug">{e.t}</p>
+              <p class="text-lilac-300/70 text-sm mt-1.5">{e.s}</p>
+              <p class="font-mono text-[11px] mt-1 tracking-wide" style="color:rgb(var(--accent)/.75)">{e.d}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   </div>
 </section>
+
+<style>
+  /* fil vertical + pastille, dans la teinte de la colonne */
+  .tl-dot {
+    position: absolute; left: 0; top: .3rem;
+    width: 11px; height: 11px; border-radius: 9999px;
+    background: rgb(var(--accent) / .9);
+    box-shadow: 0 0 0 4px rgb(var(--accent) / .12);
+  }
+  .tl-item::after {
+    content: ""; position: absolute; left: 5px; top: 1.5rem; bottom: 0; width: 1px;
+    background: linear-gradient(to bottom, rgb(var(--accent) / .3), rgb(var(--accent) / .04));
+  }
+  .tl-item:last-child::after { display: none; }
+</style>

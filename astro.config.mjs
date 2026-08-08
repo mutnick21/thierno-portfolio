@@ -1,6 +1,5 @@
 import { defineConfig } from 'astro/config';
-import tailwind from '@astrojs/tailwind';
 
-export default defineConfig({
-  integrations: [tailwind()],
-});
+// Tailwind passe par PostCSS (postcss.config.mjs), pas par @astrojs/tailwind :
+// cette intégration est dépréciée et plafonne à Astro 5, ce projet est en Astro 7.
+export default defineConfig({});

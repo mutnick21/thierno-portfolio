@@ -1,26 +1,44 @@
 ---
+/* niveau : 1 = socle / quotidien · 2 = solide · 3 = notions & exploration
+   il pilote la taille de la bulle, donc la hiérarchie visuelle du nuage */
 const domains = [
   {
-    idx: '01', tag: 'RÉSEAUX', title: 'Réseaux & Télécoms', icon: 'network',
+    idx: '01', tag: 'RÉSEAUX', title: 'Réseaux & Télécoms', icon: 'network', accent: '246 200 154',
     desc: "Conception et simulation d'architectures : routage multi-protocoles, SD-WAN, VPN IPsec site-à-site et planification radio.",
-    tags: ['OSPF', 'BGP', 'MPLS/VRF', 'SD-WAN', 'IPsec/IKEv2', 'GNS3'],
+    skills: [
+      { name: 'OSPF', lvl: 1 }, { name: 'BGP', lvl: 1 }, { name: 'SD-WAN', lvl: 1 },
+      { name: 'MPLS/VRF', lvl: 2 }, { name: 'IPsec/IKEv2', lvl: 2 }, { name: 'GNS3', lvl: 3 },
+    ],
   },
   {
-    idx: '02', tag: 'SÉCURITÉ', title: 'Cybersécurité', icon: 'shield',
+    idx: '02', tag: 'SÉCURITÉ', title: 'Cybersécurité', icon: 'shield', accent: '232 139 166',
     desc: "Supervision SOC, détection d'intrusion et durcissement — du pare-feu applicatif à la cartographie MITRE ATT&CK.",
-    tags: ['Wazuh', 'FortiWeb', 'MITRE ATT&CK', 'HIDS/FIM', 'CIS'],
+    skills: [
+      { name: 'Wazuh', lvl: 1 }, { name: 'MITRE ATT&CK', lvl: 1 },
+      { name: 'FortiWeb', lvl: 2 }, { name: 'HIDS/FIM', lvl: 3 }, { name: 'CIS', lvl: 3 },
+    ],
   },
   {
-    idx: '03', tag: 'SYSTÈME', title: 'Administration Système', icon: 'server',
+    idx: '03', tag: 'SYSTÈME', title: 'Administration Système', icon: 'server', accent: '183 155 232',
     desc: "Déploiement de SI complets sous Linux : identité SSO, services réseau, messagerie et reverse proxy sécurisé.",
-    tags: ['Linux', 'FreeIPA', 'Active Directory', 'Nginx', 'Docker'],
+    skills: [
+      { name: 'Linux', lvl: 1 }, { name: 'Active Directory', lvl: 1 }, { name: 'Docker', lvl: 1 },
+      { name: 'FreeIPA', lvl: 2 }, { name: 'Nginx', lvl: 2 },
+    ],
   },
   {
-    idx: '04', tag: 'DEV & DATA', title: 'Développement & Data', icon: 'code',
+    idx: '04', tag: 'DEV & DATA', title: 'Développement & Data', icon: 'code', accent: '127 209 196',
     desc: "Du script à l'application web, avec une ouverture Big Data et IoT pour exploiter la donnée en temps réel.",
-    tags: ['Python', 'Java', 'JavaScript', 'Hadoop', 'Spark', 'Node-RED'],
+    skills: [
+      { name: 'Python', lvl: 1 }, { name: 'Java', lvl: 2 }, { name: 'JavaScript', lvl: 2 },
+      { name: 'Hadoop', lvl: 3 }, { name: 'Spark', lvl: 3 }, { name: 'Node-RED', lvl: 3 },
+    ],
   },
 ];
+
+/* noms écrits en toutes lettres : Tailwind purge ce qu'il ne voit pas,
+   une classe construite façon `bubble-${lvl}` disparaîtrait du build */
+const sizeClass = { 1: 'bubble-1', 2: 'bubble-2', 3: 'bubble-3' };
 
 const icons = {
   network: '<circle cx="6" cy="6" r="2.4"/><circle cx="18" cy="6" r="2.4"/><circle cx="12" cy="18" r="2.4"/><path d="M7.6 7.6 10.6 16M16.4 7.6 13.4 16M8 6h8"/>',
@@ -31,71 +49,60 @@ const icons = {
 ---
 <section id="expertise" class="py-28 md:py-32">
   <div class="max-w-6xl mx-auto px-7">
-    <div class="reveal mb-16 flex flex-col md:flex-row md:items-end md:justify-between gap-6">
-      <div>
-        <span class="eyebrow mb-5">Ce que je maîtrise</span>
-        <h2 class="section-title mt-4">Quatre couches,<br class="hidden sm:block" /> une même rigueur.</h2>
-      </div>
-      <p class="text-lilac-300/80 max-w-xs md:text-right">
-        Du signal physique à la sécurité applicative — une vision complète de la pile technique.
-      </p>
+
+    <div class="reveal mb-16">
+      <span class="eyebrow mb-5">Ce que je maîtrise</span>
+      <h2 class="section-title mt-4">Quatre couches,<br class="hidden sm:block" /> une même rigueur.</h2>
     </div>
 
-    <div class="grid sm:grid-cols-2 gap-4" style="perspective:1200px">
-      {domains.map((d, i) => (
-        <article
-          class="exp-card reveal group relative flex flex-col min-h-[300px] bg-plum-900/60 border border-plum-800 rounded-2xl p-8 md:p-9 overflow-hidden"
-          style={`transition-delay:${i * 90}ms`}
+    <div class="flex flex-col">
+      {domains.map((d, gi) => (
+        <div
+          class="dom-group reveal grid md:grid-cols-[14rem_1fr] gap-7 md:gap-12 py-11 border-t border-plum-800/70 first:border-t-0 first:pt-0"
+          style={`--accent:${d.accent}; transition-delay:${gi * 110}ms`}
         >
-          <div class="spotlight absolute inset-0 pointer-events-none"></div>
-          <span class="absolute -top-3 right-4 font-display font-bold text-[7rem] leading-none text-plum-800/50 select-none pointer-events-none">{d.idx}</span>
-          <div class="relative z-10 flex flex-col h-full">
-            <div class="icon-badge w-12 h-12 rounded-xl border border-plum-700 bg-plum-950/50 flex items-center justify-center text-peach-200 mb-6 transition-colors">
-              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" set:html={icons[d.icon]} />
+          <!-- ░ étiquette du domaine ░ -->
+          <div class="flex md:flex-col items-center md:items-start gap-4">
+            <div
+              class="dom-badge shrink-0 w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300"
+              style="color:rgb(var(--accent)); border:1px solid rgb(var(--accent)/.3); background:rgb(var(--accent)/.08)"
+            >
+              <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" set:html={icons[d.icon]} />
             </div>
-            <span class="font-mono text-[11px] tracking-[0.12em] text-lilac-300/70">{d.tag}</span>
-            <h3 class="font-display font-semibold text-2xl mt-1.5 mb-3">{d.title}</h3>
-            <p class="text-lilac-300/80 text-[0.97rem] mb-6 leading-relaxed">{d.desc}</p>
-            <div class="flex flex-wrap gap-2 mt-auto">
-              {d.tags.map((t) => <span class="skill-tag group-hover:border-plum-700 group-hover:text-cream-100">{t}</span>)}
+            <div>
+              <div class="flex items-center gap-2.5">
+                <span class="font-mono text-[11px] tracking-[0.14em]" style="color:rgb(var(--accent)/.75)">{d.tag}</span>
+                <span class="font-mono text-[11px] text-plum-700">/ {d.idx}</span>
+              </div>
+              <h3 class="font-display font-semibold text-xl md:text-2xl mt-1 leading-tight">{d.title}</h3>
             </div>
           </div>
-        </article>
+
+          <!-- ░ le nuage ░ -->
+          <div>
+            <p class="text-lilac-300/70 text-[0.93rem] leading-relaxed max-w-xl mb-7">{d.desc}</p>
+            <div class="flex flex-wrap items-center gap-3.5">
+              {d.skills.map((s, i) => (
+                <span
+                  class="bubble-float"
+                  style={`animation-duration:${5 + ((gi + i) % 4) * 0.8}s; animation-delay:${(i * 0.34).toFixed(2)}s`}
+                >
+                  <span class={`bubble ${sizeClass[s.lvl]}`}>{s.name}</span>
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
       ))}
     </div>
   </div>
 </section>
 
 <style>
-  .exp-card { transition: transform .3s cubic-bezier(0.22,1,0.36,1), border-color .3s, background .3s, opacity .7s ease; will-change: transform; }
-  .exp-card:hover { border-color: rgba(246, 219, 192, .35); background: rgba(46, 25, 52, .8); }
-  .exp-card:hover .icon-badge { border-color: rgba(246, 219, 192, .5); }
-  .spotlight {
-    background: radial-gradient(240px circle at var(--mx, 50%) var(--my, 50%), rgba(246, 219, 192, .16), transparent 60%);
-    opacity: 0; transition: opacity .35s ease;
-  }
-  .exp-card:hover .spotlight { opacity: 1; }
-  @media (prefers-reduced-motion: reduce) {
-    .exp-card { transform: none !important; }
+  /* survol du groupe : l'accent du domaine se réveille, badge compris */
+  .dom-group:hover .dom-badge {
+    border-color: rgb(var(--accent) / .7);
+    background: rgb(var(--accent) / .16);
+    box-shadow: 0 0 26px -6px rgb(var(--accent) / .5);
   }
 </style>
-
-<script>
-  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  document.querySelectorAll('.exp-card').forEach((card) => {
-    const el = card as HTMLElement;
-    el.addEventListener('pointermove', (e) => {
-      const r = el.getBoundingClientRect();
-      const x = e.clientX - r.left;
-      const y = e.clientY - r.top;
-      el.style.setProperty('--mx', `${(x / r.width) * 100}%`);
-      el.style.setProperty('--my', `${(y / r.height) * 100}%`);
-      if (!reduce) {
-        const rx = ((y / r.height) - 0.5) * -6;
-        const ry = ((x / r.width) - 0.5) * 6;
-        el.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg) translateY(-4px)`;
-      }
-    });
-    el.addEventListener('pointerleave', () => { el.style.transform = ''; });
-  });
-</script>

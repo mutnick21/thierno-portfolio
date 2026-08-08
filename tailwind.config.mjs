@@ -9,11 +9,20 @@ export default {
         lilac: { 300: '#B892A6' },
         peach: { 200: '#F6DBC0' },
         cream: { 100: '#F8F4E9' },
+        /* un accent par domaine d'expertise — même clarté, même saturation */
+        dom: {
+          net:  '#F6C89A',
+          sec:  '#E88BA6',
+          sys:  '#B79BE8',
+          data: '#7FD1C4',
+        },
       },
+      /* une seule famille sur tout le site — les trois jetons pointent au même
+         endroit, ce qui évite de reprendre les ~27 classes déjà en place */
       fontFamily: {
-        display: ['"Bricolage Grotesque Variable"', 'sans-serif'],
-        sans:    ['"Geist Variable"', 'sans-serif'],
-        mono:    ['"Geist Mono Variable"', 'monospace'],
+        display: ['"Bricolage Grotesque Variable"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        sans:    ['"Bricolage Grotesque Variable"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        mono:    ['"Bricolage Grotesque Variable"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
       },
     },
   },

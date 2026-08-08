@@ -33,6 +33,37 @@
   .section-title {
     @apply font-display font-bold text-[clamp(2.2rem,5vw,3.6rem)] tracking-tight leading-[1.05];
   }
+
+  /* ░ bulles de compétences ░
+     chaque groupe expose --accent (r g b) ; la bulle s'y accorde seule */
+  .bubble {
+    @apply relative inline-flex items-center rounded-full font-mono tracking-wide select-none;
+    color: rgb(var(--accent) / .92);
+    border: 1px solid rgb(var(--accent) / .22);
+    background: linear-gradient(150deg, rgb(var(--accent) / .10), rgb(var(--accent) / .03));
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / .05);
+    transition: transform .35s cubic-bezier(.22,1,.36,1), border-color .3s, box-shadow .35s, color .3s;
+  }
+  /* la flottaison vit sur un wrapper : sinon elle écraserait le transform du :hover */
+  .bubble-float {
+    @apply inline-block;
+    animation: bubble-y ease-in-out infinite;
+  }
+
+  /* taille = niveau de maîtrise */
+  .bubble-1 { @apply text-[0.95rem] px-6 py-3.5; }
+  .bubble-2 { @apply text-[0.8rem]  px-5 py-2.5; }
+  .bubble-3 { @apply text-[0.7rem]  px-4 py-2; }
+
+  .bubble:hover {
+    color: rgb(var(--accent));
+    border-color: rgb(var(--accent) / .65);
+    transform: translateY(-5px) scale(1.04);
+    box-shadow:
+      0 14px 30px -12px rgb(var(--accent) / .55),
+      0 0 0 4px rgb(var(--accent) / .07),
+      inset 0 1px 0 rgb(255 255 255 / .08);
+  }
 }
 
 @layer utilities {
@@ -53,14 +84,66 @@
 .no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
 .no-scrollbar::-webkit-scrollbar { display: none; }
 
+/* ░ cartes-bulles ░
+   rayon asymétrique, une variante par carte : aucun angle droit,
+   et deux cartes voisines n'ont jamais la même silhouette */
+.blob {
+  --r-lg: 4rem;
+  --r-sm: 1.5rem;
+  /* le var() change au survol → border-radius se recalcule et transitionne */
+  transition: border-radius .55s cubic-bezier(.22,1,.36,1),
+              transform .35s cubic-bezier(.22,1,.36,1),
+              border-color .3s, background .3s;
+}
+.blob-1 { border-radius: var(--r-lg) var(--r-sm) var(--r-lg) var(--r-sm); }
+.blob-2 { border-radius: var(--r-sm) var(--r-lg) var(--r-sm) var(--r-lg); }
+.blob-3 { border-radius: var(--r-lg) var(--r-lg) var(--r-sm) var(--r-lg); }
+.blob-4 { border-radius: var(--r-sm) var(--r-lg) var(--r-lg) var(--r-lg); }
+/* au survol la bulle s'arrondit vers l'uniforme — elle « respire » */
+.blob:hover { --r-lg: 3rem; --r-sm: 2.75rem; }
+
+@media (max-width: 767px) {
+  .blob { --r-lg: 2.75rem; --r-sm: 1.25rem; }
+}
+
+.card-float { animation: card-y ease-in-out infinite; }
+
+/* ░ décor de fond : halos dérivants + grain ░ */
+.bg-layers { position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }
+
+.bg-orb { position: absolute; border-radius: 9999px; filter: blur(90px); }
+.bg-orb-1 { top: -18%; right: -12%; width: 60vw; height: 60vw; max-width: 780px; max-height: 780px;
+            background: radial-gradient(circle, rgba(147, 80, 115, .30), transparent 65%);
+            animation: drift-a 26s ease-in-out infinite; }
+.bg-orb-2 { top: 45%; left: -16%; width: 48vw; height: 48vw; max-width: 620px; max-height: 620px;
+            background: radial-gradient(circle, rgba(127, 209, 196, .12), transparent 65%);
+            animation: drift-b 34s ease-in-out infinite; }
+.bg-orb-3 { bottom: -20%; right: 8%; width: 44vw; height: 44vw; max-width: 560px; max-height: 560px;
+            background: radial-gradient(circle, rgba(183, 155, 232, .13), transparent 65%);
+            animation: drift-a 30s ease-in-out infinite reverse; }
+
+.bg-grain {
+  position: absolute; inset: -50%;
+  opacity: .035;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: grain 8s steps(6) infinite;
+}
+
 /* animations */
 @keyframes spin-slow  { to { transform: rotate(360deg); } }
 @keyframes float-y    { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-14px); } }
 @keyframes pulse-ring { 0%, 100% { opacity: .45; transform: scale(1); } 50% { opacity: .12; transform: scale(1.05); } }
+@keyframes bubble-y   { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+@keyframes card-y     { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+@keyframes drift-a    { 0%, 100% { transform: translate(0, 0) scale(1); } 50% { transform: translate(-5%, 7%) scale(1.12); } }
+@keyframes drift-b    { 0%, 100% { transform: translate(0, 0) scale(1); } 50% { transform: translate(8%, -6%) scale(1.08); } }
+@keyframes grain      { 0%{transform:translate(0,0)} 20%{transform:translate(-4%,3%)} 40%{transform:translate(3%,-4%)}
+                        60%{transform:translate(-3%,-3%)} 80%{transform:translate(4%,2%)} 100%{transform:translate(0,0)} }
 .animate-spin-slow { animation: spin-slow 28s linear infinite; }
 .animate-float     { animation: float-y 6s ease-in-out infinite; }
 
 @media (prefers-reduced-motion: reduce) {
   .reveal { opacity: 1; transform: none; transition: none; }
-  .animate-spin-slow, .animate-float { animation: none; }
+  .animate-spin-slow, .animate-float,
+  .bg-orb, .bg-grain, .bubble-float, .card-float { animation: none !important; }
 }

@@ -1,4 +1,18 @@
 ---
+/* même nuancier que la section Expertise : une catégorie = une teinte,
+   sur tout le site */
+const accents = {
+  'Tous':       '246 219 192',
+  'Réseaux':    '246 200 154',
+  'Sécurité':   '232 139 166',
+  'Système':    '183 155 232',
+  'Dev & Data': '127 209 196',
+};
+
+/* silhouettes de bulle, en toutes lettres pour survivre au purge Tailwind ;
+   on les fait tourner pour que deux cartes voisines diffèrent toujours */
+const blobs = ['blob-1', 'blob-2', 'blob-3', 'blob-4'];
+
 const filters = ['Tous', 'Réseaux', 'Sécurité', 'Système', 'Dev & Data'];
 
 const projects = [
@@ -49,9 +63,6 @@ const projects = [
     <div class="reveal mb-12">
       <span class="eyebrow mb-5">Réalisations</span>
       <h2 class="section-title mt-4">Projets sélectionnés.</h2>
-      <p class="text-lilac-300/80 max-w-lg mt-5">
-        Des travaux concrets, du laboratoire réseau au centre de supervision de sécurité.
-      </p>
     </div>
 
     <!-- filtres : segmented control avec pastille glissante -->
@@ -63,37 +74,69 @@ const projects = [
             class:list={['filter-btn relative z-10 font-mono text-[12px] uppercase tracking-wider px-4 py-2 rounded-full whitespace-nowrap transition-colors duration-300',
               i === 0 ? 'text-plum-950' : 'text-lilac-300 hover:text-cream-100']}
             data-filter={f}
+            data-accent={accents[f]}
           >{f}</button>
         ))}
       </div>
     </div>
 
     <!-- grille -->
-    <div class="grid md:grid-cols-2 gap-5" id="grid">
+    <!-- gap généreux : les courbes ont besoin d'air pour se lire -->
+    <div class="grid md:grid-cols-2 gap-7" id="grid">
       {projects.map((p, i) => (
-        <article
-          class="project-card group relative bg-plum-900 border border-plum-800 rounded-2xl p-8 transition-all duration-300 hover:border-peach-200/40 hover:-translate-y-1 overflow-hidden"
+        <div
+          class="project-card transition-[opacity,transform] duration-300"
           data-cat={p.cat}
+          style={`--accent:${accents[p.cat]}`}
         >
-          <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-peach-200 via-peach-200/40 to-transparent scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-500"></div>
-          <div class="flex items-start justify-between mb-5">
-            <div class="flex items-center gap-3">
-              <span class="font-display font-bold text-lg text-plum-700 group-hover:text-lilac-300/70 transition-colors">{String(i + 1).padStart(2, '0')}</span>
-              <span class="font-mono text-[11px] uppercase tracking-widest text-lilac-300">{p.type}</span>
-            </div>
-            <span class="w-8 h-8 rounded-full border border-plum-800 flex items-center justify-center text-lilac-300/40 group-hover:text-plum-950 group-hover:bg-peach-200 group-hover:border-peach-200 transition-all duration-300">↗</span>
+          <div class="card-float h-full" style={`animation-duration:${7 + (i % 4)}s; animation-delay:${(i * 0.45).toFixed(2)}s`}>
+            <article class={`card-body group relative flex flex-col h-full blob ${blobs[i % 4]} bg-plum-900/55 backdrop-blur-xl border border-plum-800 p-9 md:p-10 overflow-hidden`}>
+              <div class="card-glow absolute inset-0 pointer-events-none"></div>
+              <div class="relative z-10 flex flex-col h-full">
+                <div class="flex items-start justify-between mb-5">
+                  <div class="flex items-center gap-3">
+                    <span class="font-display font-bold text-lg text-plum-700 group-hover:text-lilac-300/70 transition-colors">{String(i + 1).padStart(2, '0')}</span>
+                    <span class="font-mono text-[11px] uppercase tracking-widest" style="color:rgb(var(--accent)/.8)">{p.type}</span>
+                  </div>
+                  <span class="card-arrow w-8 h-8 rounded-full border border-plum-800 flex items-center justify-center text-lilac-300/40 transition-all duration-300">↗</span>
+                </div>
+                <h3 class="font-display font-semibold text-xl mb-3">{p.title}</h3>
+                <p class="text-lilac-300/80 text-[0.95rem] leading-relaxed mb-7">{p.desc}</p>
+                <div class="flex flex-wrap gap-2 mt-auto">
+                  {p.stack.split(' · ').map((t) => <span class="bubble bubble-3">{t}</span>)}
+                </div>
+              </div>
+            </article>
           </div>
-          <h3 class="font-display font-semibold text-xl mb-3">{p.title}</h3>
-          <p class="text-lilac-300/80 text-[0.95rem] leading-relaxed mb-6">{p.desc}</p>
-          <div class="flex items-center justify-between gap-3 pt-4">
-            <p class="font-mono text-[11px] text-lilac-300/60 tracking-wide">{p.stack}</p>
-            <span class="font-mono text-[10px] uppercase tracking-wider text-lilac-300/40 shrink-0">{p.cat}</span>
-          </div>
-        </article>
+        </div>
       ))}
     </div>
   </div>
 </section>
+
+<style>
+  /* la bulle s'allume à la teinte de sa catégorie
+     (le filet supérieur d'avant est parti : un trait droit se faisait
+     dévorer par la courbe du coin) */
+  .card-body:hover {
+    transform: translateY(-6px);
+    border-color: rgb(var(--accent) / .5);
+    background: rgba(46, 25, 52, .62);
+    box-shadow: 0 26px 60px -28px rgb(var(--accent) / .6);
+  }
+
+  .card-glow {
+    background: radial-gradient(460px circle at 20% 0%, rgb(var(--accent) / .13), transparent 70%);
+    opacity: 0; transition: opacity .4s ease;
+  }
+  .card-body:hover .card-glow { opacity: 1; }
+
+  .card-body:hover .card-arrow {
+    color: #160B18;
+    background: rgb(var(--accent));
+    border-color: rgb(var(--accent));
+  }
+</style>
 
 <script>
   const wrap = document.getElementById('filters');
@@ -105,6 +148,10 @@ const projects = [
   function movePill(btn) {
     pill.style.left = btn.offsetLeft + 'px';
     pill.style.width = btn.offsetWidth + 'px';
+    // la pastille adopte la teinte du filtre actif
+    const accent = btn.getAttribute('data-accent');
+    pill.style.background = `rgb(${accent})`;
+    pill.style.boxShadow = `0 2px 14px -2px rgb(${accent} / .55)`;
   }
 
   function setActive(btn) {

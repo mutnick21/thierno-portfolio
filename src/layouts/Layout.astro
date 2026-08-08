@@ -1,8 +1,6 @@
 ---
 import '../styles/global.css';
 import '@fontsource-variable/bricolage-grotesque';
-import '@fontsource-variable/geist';
-import '@fontsource-variable/geist-mono';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 const { title = 'Thierno Abdoulaye Sall — Ingénieur Réseaux & Télécoms' } = Astro.props;
@@ -16,6 +14,14 @@ const { title = 'Thierno Abdoulaye Sall — Ingénieur Réseaux & Télécoms' } 
     <title>{title}</title>
   </head>
   <body class="min-h-screen flex flex-col">
+    <!-- décor de fond, purement visuel -->
+    <div class="bg-layers" aria-hidden="true">
+      <div class="bg-orb bg-orb-1"></div>
+      <div class="bg-orb bg-orb-2"></div>
+      <div class="bg-orb bg-orb-3"></div>
+      <div class="bg-grain"></div>
+    </div>
+
     <Nav />
     <main class="flex-1">
       <slot />
