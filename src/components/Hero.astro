@@ -67,7 +67,9 @@ const socials = [
         </div>
         <!-- puces flottantes -->
         <span class="absolute -left-3 top-12 px-3 py-1.5 rounded-lg bg-plum-800/90 border border-plum-700 font-mono text-[11px] text-lilac-300 animate-float" style="animation-delay:.8s;">SD-WAN</span>
-        <span class="absolute -right-2 bottom-16 px-3 py-1.5 rounded-lg bg-plum-800/90 border border-plum-700 font-mono text-[11px] text-lilac-300 animate-float" style="animation-delay:1.8s;">SOC Wazuh</span>
+        <!-- md:right-0 : juste apres le passage en deux colonnes la colonne est
+             etroite, et -right-2 faisait deborder la puce de 4px hors de l'ecran -->
+        <span class="absolute -right-2 md:right-0 lg:-right-2 bottom-16 px-3 py-1.5 rounded-lg bg-plum-800/90 border border-plum-700 font-mono text-[11px] text-lilac-300 animate-float" style="animation-delay:1.8s;">SOC Wazuh</span>
       </div>
     </div>
   </div>

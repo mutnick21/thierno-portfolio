@@ -11,12 +11,8 @@ const current = norm(Astro.url.pathname);
 const isActive = (href) => norm(href) === current;
 ---
 <nav id="nav" class="fixed top-0 inset-x-0 z-50 transition-all duration-300">
-  <div class="max-w-6xl mx-auto px-7 py-5 flex items-center justify-between">
-    <a href="/" class="font-mono text-sm font-medium flex items-center gap-2.5 tracking-tight">
-      <span class="w-[7px] h-[7px] rounded-full bg-peach-200 shadow-[0_0_10px_#F6DBC0] animate-pulse"></span>
-      Thierno Sall
-    </a>
-
+  <!-- plus de logo à gauche : justify-end garde les liens (et le burger) à droite -->
+  <div class="max-w-6xl mx-auto px-7 py-5 flex items-center justify-end">
     <div class="hidden md:flex items-center gap-7 font-mono text-[11px] uppercase tracking-[0.15em]">
       {links.map((l) => (
         <a

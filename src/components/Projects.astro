@@ -67,6 +67,9 @@ const projects = [
 
     <!-- filtres : segmented control avec pastille glissante -->
     <div class="reveal mb-10">
+      <!-- le fondu vit sur un parent immobile : posé sur le conteneur qui défile,
+           il glisserait avec le contenu au lieu de rester collé au bord -->
+      <div id="filters-wrap" class="relative inline-block max-w-full">
       <div id="filters" class="no-scrollbar relative inline-flex items-center gap-1 p-1.5 rounded-full border border-plum-800 bg-plum-900/60 max-w-full overflow-x-auto">
         <span id="filter-pill" class="absolute top-1.5 bottom-1.5 rounded-full bg-peach-200 shadow-[0_2px_12px_-2px_rgba(246,219,192,0.5)] transition-[left,width] duration-300 ease-[cubic-bezier(0.34,1.2,0.64,1)]" style="left:0;width:0"></span>
         {filters.map((f, i) => (
@@ -77,6 +80,7 @@ const projects = [
             data-accent={accents[f]}
           >{f}</button>
         ))}
+      </div>
       </div>
     </div>
 
@@ -115,6 +119,24 @@ const projects = [
 </section>
 
 <style>
+  /* indice de défilement : la barre de filtres déborde sur mobile, et
+     .no-scrollbar masque l'ascenseur — sans ce fondu, rien ne signale
+     qu'il reste des catégories à droite */
+  #filters-wrap::after {
+    content: "";
+    position: absolute;
+    inset-block: 0;
+    right: 0;
+    width: 3.5rem;
+    pointer-events: none;
+    border-radius: 0 9999px 9999px 0;
+    /* teinte du bandeau : plum-900 à 60 % posé sur plum-950 */
+    background: linear-gradient(to left, #1C0F20 20%, rgba(28, 15, 32, 0));
+    opacity: 0;
+    transition: opacity .25s ease;
+  }
+  #filters-wrap.more-right::after { opacity: 1; }
+
   /* la bulle s'allume à la teinte de sa catégorie
      (le filet supérieur d'avant est parti : un trait droit se faisait
      dévorer par la courbe du coin) */
@@ -140,10 +162,18 @@ const projects = [
 
 <script>
   const wrap = document.getElementById('filters');
+  const fade = document.getElementById('filters-wrap');
   const pill = document.getElementById('filter-pill');
   const buttons = Array.from(document.querySelectorAll('.filter-btn'));
   const cards = document.querySelectorAll('.project-card');
   let current = buttons[0];
+
+  // n'affiche le fondu que s'il reste vraiment quelque chose a droite
+  function majFondu() {
+    if (!wrap || !fade) return;
+    const reste = wrap.scrollWidth - wrap.clientWidth - wrap.scrollLeft;
+    fade.classList.toggle('more-right', reste > 2);
+  }
 
   function movePill(btn) {
     pill.style.left = btn.offsetLeft + 'px';
@@ -184,9 +214,10 @@ const projects = [
   );
 
   // position initiale (après le calcul de mise en page et le chargement des polices)
-  const init = () => movePill(current);
+  const init = () => { movePill(current); majFondu(); };
   requestAnimationFrame(init);
   window.addEventListener('load', init);
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(init);
-  window.addEventListener('resize', () => movePill(current));
+  window.addEventListener('resize', init);
+  wrap?.addEventListener('scroll', majFondu, { passive: true });
 </script>
